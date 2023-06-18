@@ -1,0 +1,15 @@
+- name: Download Font
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/CascadiaCode.zip
+    dest: /tmp/CascadiaCode.zip
+
+- name: Unzip Font
+  become: true
+  ansible.builtin.unarchive:
+    src: /tmp/CascadiaCode.zip
+    dest: /usr/local/share/fonts
+
+- name: Install Font
+  become: true
+  shell: fc-cache -fvs

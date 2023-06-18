@@ -1,0 +1,27 @@
+- name: Install System Packages
+  become: true
+  apt:
+    name:
+      - build-essential
+      - software-properties-common
+      - cmake
+      - pkg-config
+      - lua5.1
+      - unzip
+      - libtool
+      - libtool-bin
+      - gettext
+      - curl
+      - wget
+      - fontconfig
+      - unzip
+      - zip
+      - jq
+      - htop
+      - exa
+      - git
+  tags:
+    - install
+    - neovim
+    - core
+
