@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 
-UNENCRYPTED_FILES="$(grep -rLE "ANSIBLE_VAULT" "$(git rev-parse --show-toplevel)/secrets")"
+PROJECT_PATH=$(git rev-parse --show-toplevel)
+UNENCRYPTED_FILES="$(grep -rLE "ANSIBLE_VAULT" "$PROJECT_PATH/secrets")"
 
 if [ -n "$UNENCRYPTED_FILES" ]; then
   echo "These files are not encrypted !"
   echo "$UNENCRYPTED_FILES";
-  exit 1
 fi
-
+docker run -v "$PROJECT_PATH:/opt" --rm aquasec/trivy -q fs opt
 #
