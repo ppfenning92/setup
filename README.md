@@ -11,3 +11,8 @@ git clone https://github.com/ppfenning92/setup.git
 ./setup/prepare.sh
 ./.local/bin/ansible-playbook setup/init.yml --ask-become-pass
 ```
+
+## Tets
+```shell
+docker run -it -v "$PWD:/home/$(whoami)/$(basename $PWD)" --rm setup-ubuntu
+```
