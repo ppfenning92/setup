@@ -1,0 +1,19 @@
+- name: Ensure directory
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.ssh"
+    state: directory
+    owner: "{{ me }}"
+    group: "{{ me }}"
+    mode: '0700'
+- name: Copy public key
+  copy:
+    dest: "{{ dest_key_pub }}"
+    src: "{{ source_key_pub }}"
+    mode: '0644'
+- name: Copy private key
+  copy:
+    dest: "{{ dest_key }}"
+    src: "{{ source_key }}"
+    mode: '0600'
+
+

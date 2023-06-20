@@ -1,7 +1,9 @@
 - hosts: localhost
   vars:
     source_key: "./secrets/ssh/id_rsa"
-    dest_key: "{{ lookup('env', 'HOME') }}/.secrets/id_rsa"
+    source_key_pub: "./secrets/ssh/id_rsa.pub"
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    dest_key_pub: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
     personal: "{{ lookup('env', 'HOME') }}/private"
     me: "{{ lookup('env', 'USER') }}"
   pre_tasks:
@@ -18,8 +20,10 @@
 #    - include: tasks/secrets.yml
     - include_tasks: tasks/core.yml
     - include_tasks: tasks/1password.yml
+    - include_tasks: tasks/ssh.yml
     - include_tasks: tasks/core-alternatives.yml
     - include_tasks: tasks/fonts.yml
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/neovim.yml
+#    - include_tasks: tasks/dotfiles.yml
 

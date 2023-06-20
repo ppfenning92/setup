@@ -13,6 +13,7 @@
       - gettext
       - curl
       - wget
+      - openssh-client
       - fontconfig
       - unzip
       - zip
