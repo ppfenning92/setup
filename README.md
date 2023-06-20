@@ -1,24 +1,13 @@
-# Dotfiles
+# Setup
+
+## Repo setup
+```shell
+git config --local include.path ../.gitconfig 
+```
 
 ## setup new machine
-### checkout repository
 ```shell
-sudo apt install git -y
-git config --global core.autocrlf false
-mkdir -vp ~/.dotfiles
-alias dotfiles="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-dotfiles init -b main
-dotfiles remote add origin https://github.com/ppfenning92/dotfiles.git
-dotfiles fetch --all
-dotfiles checkout -f main
-dotfiles reset --hard
-source .config/.env
-
-
-
-```
-### install ansible
-```shell
-./dotfiles/setup/setup.sh
-./.local/bin/ansible-playbook dotfiles/setup/init.yml --ask-become-pass
+git clone https://github.com/ppfenning92/setup.git
+./setup/prepare.sh
+./.local/bin/ansible-playbook setup/init.yml --ask-become-pass
 ```
