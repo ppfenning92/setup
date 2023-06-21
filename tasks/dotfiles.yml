@@ -4,9 +4,10 @@
     state: 'directory'
 
 - name: Alias dotfile bare repo
-  shell: |
-    {{ cfg_cmd }} init -b main
-    {{ cfg_cmd }} remote add origin git@github.com:ppfenning92/dotfiles.git
-    {{ cfg_cmd }} fetch --all
-    {{ cfg_cmd }} checkout -f main
-    {{ cfg_cmd }} reset --hard
+  shell: "{{ cfg_cmd }} {{ item }}"
+  loop:
+    - init -b main
+    - remote add origin git@github.com:ppfenning92/dotfiles.git
+    - fetch --all
+    - checkout -f main
+    - reset --hard
