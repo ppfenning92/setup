@@ -1,0 +1,8 @@
+- name: Create git-dir
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.cfg"
+
+- name: Alias dotfile bare repo
+  git:
+    separate_git_dir: "{{ lookup('env', 'HOME') }}/.cfg"
+    
