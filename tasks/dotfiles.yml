@@ -1,8 +1,12 @@
 - name: Create git-dir
   file:
     path: "{{ lookup('env', 'HOME') }}/.cfg"
+    state: 'directory'
 
 - name: Alias dotfile bare repo
-  git:
-    separate_git_dir: "{{ lookup('env', 'HOME') }}/.cfg"
-    
+  shell: |
+    {{ cfg_cmd }} init -b main
+    {{ cfg_cmd }} remote add origin git@github.com:ppfenning92/dotfiles.git
+    {{ cfg_cmd }} fetch --all
+    {{ cfg_cmd }} checkout -f main
+    {{ cfg_cmd }} reset --hard
