@@ -20,8 +20,11 @@
     patterns: [ '*.env' ]
   register: env_files
 
-- name: test sql copy
+- name: decrypt env-files
   copy:
     src: "{{ item.path }}"
     dest: "{{ item.path }}"
   loop: "{{ env_files.files | list }}"
+
+
+  
