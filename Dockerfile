@@ -10,8 +10,6 @@ RUN apt install sudo git -y
 RUN useradd -ms /bin/bash $USER
 RUN echo "${USER}:${PASS}" | chpasswd
 RUN usermod -aG sudo $USER
-RUN mkdir -p /opt/system-setup
-RUN chown "$USER:$USER" -R /opt/system-setup
 
 USER $USER
 

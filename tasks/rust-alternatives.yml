@@ -4,8 +4,14 @@
     - install
     - productivity
 
+- name: Set rust to stable version
+  shell: $CARGO_HOME/bin/rustup default stable
+  tags:
+    - install
+    - productivity
+
 - name: install tools
-  shell: $HOME/.cargo/bin/cargo install {{ item }}
+  shell: $CARGO_HOME/bin/cargo install {{ item }}
   loop:
 #    - du-dust
 #    - hyperfine

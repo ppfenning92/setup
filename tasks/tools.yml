@@ -1,0 +1,17 @@
+- name: Install System Packages
+  become: true
+  git:
+    repo: https://github.com/b3nj5m1n/xdg-ninja.git
+    dest: /opt/xdg-ninja
+
+- name: opt permissions
+  become: true
+  file:
+    path: /opt
+    state : directory
+    group: "{{ me }}"
+    owner: "{{ me }}"
+    recurse: true
+
+- name: nvm
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash

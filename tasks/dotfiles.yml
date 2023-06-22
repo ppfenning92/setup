@@ -1,7 +1,13 @@
+- name: Check that git-dir exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.cfg"
+  register: cfg_stats
+
 - name: Create git-dir
   file:
     path: "{{ lookup('env', 'HOME') }}/.cfg"
     state: 'directory'
+  when: cfg_stats.stat.exists == False
 
 - name: Alias dotfile bare repo
   shell: "{{ cfg_cmd }} {{ item }}"
@@ -11,6 +17,7 @@
     - fetch --all
     - checkout -f main
     - reset --hard
+  when: cfg_stats.stat.exists == False
 
 - name: get env-files
   find:
