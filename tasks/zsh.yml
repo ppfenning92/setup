@@ -12,7 +12,7 @@
 
 - name: Check that the oh-my-zsh exists
   stat:
-    path: "{{ lookup('env', 'ZDOTDIR') }}/ohmyzsh"
+    path: "{{ lookup('env', 'HOME') }}/.config/zsh/ohmyzsh"
   register: oh_my_stats
   tags: *tags_for_zsh_tasks
 
@@ -26,33 +26,39 @@
 - name: Install autosuggestions
   shell: |
     source {{ lookup('env', 'HOME') }}/.bashrc
-    git clone "https://github.com/zsh-users/zsh-autosuggestions" "$ZSH/custom/plugins/zsh-autosuggestions"
+    PLUGIN_DIR="$ZSH/custom/plugins/{{ item }}"
+    if [[ -d "$PLUGIN_DIR" ]]; then
+      cd "$PLUGIN_DIR" && git pull
+    else
+      git clone "https://github.com/zsh-users/{{ item }}" "$PLUGIN_DIR"
+    fi
+  loop:
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+    - zsh-completions
+    - zsh-history-substring-search
   tags: *tags_for_zsh_tasks
-
-
-- name: Install syntax highlight
-  shell: |
-    source {{ lookup('env', 'HOME') }}/.bashrc
-    git clone "https://github.com/zsh-users/zsh-syntax-highlighting" "$ZSH/custom/plugins/zsh-syntax-highlighting"
-  tags: *tags_for_zsh_tasks
-
-- name: Install completions
-  shell: |
-    source {{ lookup('env', 'HOME') }}/.bashrc
-    git clone "https://github.com/zsh-users/zsh-completions" "$ZSH/custom/plugins/zsh-completions"
-  tags: *tags_for_zsh_tasks
-
-- name: Install history-substring-search
-  shell: |
-    source {{ lookup('env', 'HOME') }}/.bashrc
-    git clone "https://github.com/zsh-users/zsh-history-substring-search" "$ZSH/custom/plugins/zsh-history-substring-search"
-  tags: *tags_for_zsh_tasks
-
 
 - name: Install Starship
   shell: curl -sS https://starship.rs/install.sh | sh -s -- -y
   tags: *tags_for_zsh_tasks
-#  /etc/zsh/zshenv
-#  if [[ -d "$HOME/.config/zsh" ]]; then
-#  export ZDOTDIR=$HOME/.config/zsh
-#  fi
+
+- name: set global ZDOTDIR
+  become: true
+  blockinfile:
+    state: present
+    insertafter: EOF
+    dest: /etc/zsh/zshenv
+    marker: "### ANSIBLE MANAGED BLOCK ###"
+    content: |
+      if [[ -d "$HOME/.config/zsh" ]]; then
+        export ZDOTDIR=$HOME/.config/zsh
+      fi
+
+- name: move zshrc
+  copy:
+    dest: "{{ lookup('env', 'HOME') }}/.config/zsh/.zshrc"
+    src: "{{ lookup('env', 'HOME') }}/.config/zsh/.zshrc.pre-oh-my-zsh"
+    backup: true
+
+
