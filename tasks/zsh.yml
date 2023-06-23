@@ -59,6 +59,5 @@
   copy:
     dest: "{{ lookup('env', 'HOME') }}/.config/zsh/.zshrc"
     src: "{{ lookup('env', 'HOME') }}/.config/zsh/.zshrc.pre-oh-my-zsh"
-    backup: true
 
 

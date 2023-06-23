@@ -28,3 +28,8 @@
   tags:
     - install
     - productivity
+
+- name: remove .zshenv
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.zshenv"
+    state: absent

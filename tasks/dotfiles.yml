@@ -1,37 +1,31 @@
-- name: Check that git-dir exists
-  stat:
-    path: "{{ lookup('env', 'HOME') }}/.cfg"
-  register: cfg_stats
+- name: Get dotfiles repo
+  git:
+    repo: git@github.com:ppfenning92/dotfiles.git
+    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    recursive: true
 
-- name: Create git-dir
+- name: remove default .bashrc
   file:
-    path: "{{ lookup('env', 'HOME') }}/.cfg"
-    state: 'directory'
-  when: cfg_stats.stat.exists == False
+    path: "{{ lookup('env', 'HOME')}}/.bashrc"
+    state: absent
 
-- name: Alias dotfile bare repo
-  shell: "{{ cfg_cmd }} {{ item }}"
-  loop:
-    - init -b main
-    - remote add origin git@github.com:ppfenning92/dotfiles.git
-    - fetch --all
-    - checkout -f main
-    - reset --hard
-  when: cfg_stats.stat.exists == False
+- name: Stow
+  shell: chdir={{ lookup('env', 'HOME')}}/.dotfiles stow . -d . -t "{{ lookup('env', 'HOME') }}"
 
-- name: get env-files
-  find:
-    paths: "{{ lookup('env', 'HOME') }}/.config"
-    file_type: file
-    recurse: yes
-    patterns: [ '*.env' ]
-  register: env_files
+- name: Set disable admin-flag file
+  become: true
+  file:
+    path: /etc/sudoers.d/disable_admin_flag
+    state: touch
 
-- name: decrypt env-files
-  copy:
-    src: "{{ item.path }}"
-    dest: "{{ item.path }}"
-  loop: "{{ env_files.files | list }}"
+- name: Set disable admin-flag file
+  become: true
+  blockinfile:
+    marker: "### ANSIBLE MANAGED"
+    path: /etc/sudoers.d/disable_admin_flag
+    insertafter: EOF
+    block: |
+      Defaults !admin_flag
 
 
   

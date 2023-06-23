@@ -6,6 +6,7 @@
       - software-properties-common
       - cmake
       - pkg-config
+      - stow
       - lua5.1
       - unzip
       - libtool
@@ -25,4 +26,25 @@
     - install
     - neovim
     - core
+
+- name: Setup Directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ me }}"
+    group: "{{ me }}"
+  loop:
+    - "{{ lookup('env',  'HOME') }}/Documents"
+    - "{{ lookup('env',  'HOME') }}/Downloads"
+    - "{{ lookup('env',  'HOME') }}/Pictures"
+    - "{{ lookup('env',  'HOME') }}/Pictures/screenshots"
+    - "{{ lookup('env',  'HOME') }}/projects"
+    - "{{ lookup('env',  'HOME') }}/projects/private"
+    - "{{ lookup('env',  'HOME') }}/projects/work"
+    - "{{ lookup('env',  'HOME') }}/.config"
+    - "{{ lookup('env',  'HOME') }}/.local"
+    - "{{ lookup('env',  'HOME') }}/.local/bin"
+    - "{{ lookup('env',  'HOME') }}/.local/share"
+    - "{{ lookup('env',  'HOME') }}/.local/state"
+    - "{{ lookup('env',  'HOME') }}/.cache"
 

@@ -39,4 +39,6 @@
     - include_tasks: tasks/rust-alternatives.yml
     - include_tasks: tasks/neovim.yml
     - include_tasks: tasks/tools.yml
+    - include_tasks: tasks/go.yml
+
 
