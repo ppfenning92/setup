@@ -37,3 +37,7 @@
     - neovim
 
 
+- name: remove neovim src dir
+  file:
+    path: "{{ lookup('env', 'HOME') }}/neovim"
+    state: absent

@@ -15,7 +15,8 @@
     state: absent
 
 - name: go tools
-  shell: /usr/local/go/bin/go install {{ item }}
+  shell: |
+    GOPATH="$XDG_DATA_HOME"/go /usr/local/go/bin/go install {{ item }}
   loop:
     - github.com/charmbracelet/glow@latest
     - github.com/charmbracelet/gum@latest
