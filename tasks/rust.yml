@@ -14,18 +14,18 @@
   shell: $CARGO_HOME/bin/cargo install {{ item }}
   loop:
     - ripgrep
-#    - du-dust
-#    - hyperfine
-#    - bandwhich
-#    - ytop
-#    - sd
-#    - eva
-#    - procs
-#    - tealdeer
-#    - fd-find
-#    - bat
-#    - jql
-#    - broot
+    - du-dust
+    - hyperfine
+    - bandwhich
+    - ytop
+    - sd
+    - eva
+    - procs
+    - tealdeer
+    - fd-find
+    - bat
+    - jql
+    - broot
   tags:
     - install
     - productivity
