@@ -35,18 +35,5 @@
   tags:
     - install
     - neovim
-- name: Remove neovim
-  shell: |
-    rm -rf ~/neovim
-    rm -rf ~/.config/nvim
-    rm -rf ~/.local/share/nvim
-  tags:
-    - install
-    - neovim
-- name: Get NvChad
-  ansible.builtin.git:
-    repo: https://github.com/NvChad/NvChad
-    dest: "{{ lookup('env', 'HOME') }}/.config/nvim"
-    depth: 1
 
 

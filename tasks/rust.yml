@@ -13,18 +13,19 @@
 - name: install tools
   shell: $CARGO_HOME/bin/cargo install {{ item }}
   loop:
-#    - du-dust
-#    - hyperfine
-#    - bandwhich
-#    - ytop
-#    - sd
-#    - procs
-#    - tealdeer
+    - du-dust
+    - hyperfine
+    - bandwhich
+    - ytop
+    - sd
+    - eva
+    - procs
+    - tealdeer
     - ripgrep
-#    - fd-find
-#    - bat
-#    - jql
-#    - broot
+    - fd-find
+    - bat
+    - jql
+    - broot
   tags:
     - install
     - productivity

@@ -36,7 +36,7 @@
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/1password.yml
     - include_tasks: tasks/fonts.yml
-    - include_tasks: tasks/rust-alternatives.yml
+    - include_tasks: tasks/rust.yml
     - include_tasks: tasks/neovim.yml
     - include_tasks: tasks/tools.yml
     - include_tasks: tasks/go.yml

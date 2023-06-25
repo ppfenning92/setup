@@ -18,3 +18,4 @@
   shell: /usr/local/go/bin/go install {{ item }}
   loop:
     - github.com/charmbracelet/glow@latest
+    - github.com/charmbracelet/gum@latest
