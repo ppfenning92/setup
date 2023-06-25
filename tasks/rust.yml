@@ -1,5 +1,5 @@
 - name: Install rust
-  shell: curl https://sh.rustup.rs -sSf | sh -s -- --profile=complete -y
+  shell: curl https://sh.rustup.rs -sSf | sh -s -- --profile=complete --no-modify-path -y
   tags:
     - install
     - productivity
