@@ -48,3 +48,10 @@
     - "{{ lookup('env',  'HOME') }}/.local/state"
     - "{{ lookup('env',  'HOME') }}/.cache"
 
+- name: Ensure XDG Runtime directory exists
+  become: true
+  file:
+    path: "{{ XDG_RUNTIME_DIR }}"
+    owner: "{{ me }}"
+    group: "{{ me }}"
+    mode: 0700
