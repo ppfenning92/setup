@@ -51,7 +51,8 @@
 - name: Ensure XDG Runtime directory exists
   become: true
   file:
-    path: "{{ XDG_RUNTIME_DIR }}"
+    path: "$XDG_RUNTIME_DIR"
+    state: directory
     owner: "{{ me }}"
     group: "{{ me }}"
     mode: 0700
