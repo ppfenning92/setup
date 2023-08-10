@@ -23,7 +23,7 @@
     XDG_CACHE_HOME: "{{ lookup('env', 'HOME') }}/.cache"
     XDG_DATA_HOME: "{{ lookup('env', 'HOME') }}/.local/share"
     XDG_STATE_HOME: "{{ lookup('env', 'HOME') }}/.local/state"
-    XDG_RUNTIME_DIR: /run/user/$UID
+    XDG_RUNTIME_DIR: "/run/user/{{ lookup('env', 'UID') }}"
     ZDOTDIR: "{{ lookup('env', 'HOME') }}/.config/zsh"
     ZSH: "{{ lookup('env', 'HOME') }}.config/zsh/ohmyzsh"
     CARGO_HOME: "{{ lookup('env', 'HOME') }}/.local/share/cargo"
