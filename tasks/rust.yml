@@ -25,12 +25,7 @@
     - fd-find
     - bat
     - jql
-    - broot
+    - --locked --features clipboard broot
   tags:
     - install
     - productivity
-
-- name: remove .zshenv
-  file:
-    path: "{{ lookup('env', 'HOME') }}/.zshenv"
-    state: absent
