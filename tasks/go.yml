@@ -20,3 +20,6 @@
   loop:
     - github.com/charmbracelet/glow@latest
     - github.com/charmbracelet/gum@latest
+    - github.com/incu6us/goimports-reviser/v3@latest
+    - mvdan.cc/gofumpt@latest
+    - github.com/segmentio/golines@latest
