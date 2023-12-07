@@ -26,6 +26,8 @@
       - zoxide
       - nmap
       - imagemagick
+      - python3-venv
+      - tmux
   tags:
     - install
     - neovim
