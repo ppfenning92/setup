@@ -22,6 +22,10 @@
       - htop
       - exa
       - git
+      - fzf
+      - zoxide
+      - nmap
+      - imagemagick
   tags:
     - install
     - neovim

@@ -25,7 +25,6 @@
     - fd-find
     - bat
     - jql
-    - --locked --features clipboard broot
   tags:
     - install
     - productivity
