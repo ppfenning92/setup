@@ -3,12 +3,21 @@
   git:
     repo: https://github.com/b3nj5m1n/xdg-ninja.git
     dest: /opt/xdg-ninja
+- name: Downloaf fzf from git
+  become: true
+  git:
+    repo: git clone --depth 1 https://github.com/junegunn/fzf.git
+    dest: /opt/fzf
+
+- name: install fzf
+  shell: |
+    bash -c "/opt/fzf/install -all --xgd --key-bindings --completion --no-update-rc"
 
 - name: opt permissions
   become: true
   file:
     path: /opt
-    state : directory
+    state: directory
     group: "{{ me }}"
     owner: "{{ me }}"
     recurse: true
@@ -16,4 +25,3 @@
 - name: nvm
   shell: |
     PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash'
-    
