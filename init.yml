@@ -40,5 +40,7 @@
     - include_tasks: tasks/neovim.yml
     - include_tasks: tasks/tools.yml
     - include_tasks: tasks/go.yml
+    - include_tasks: tasks/node.yml
+
 
 
