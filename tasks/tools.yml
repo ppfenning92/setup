@@ -15,7 +15,19 @@
 
 - name: Install fzf
   shell: |
-    bash -c "/opt/fzf/install --all --xgd --key-bindings --completion --no-update-rc"
+    bash -c "/opt/fzf/install --all --xdg --key-bindings --completion --no-update-rc"
+
+- name: Glamour themes
+  become: true
+  git:
+    repo: https://github.com/catppuccin/glamour.git
+    version: v1.0.0
+    dest: /opt/catppuccin/glamour
+
+- name: Build Glamour
+  become: true
+  shell: |
+    python /opt/catppuccin/glamour/src/generate.py
 
 - name: Opt permissions
   become: true
@@ -25,7 +37,3 @@
     group: "{{ me }}"
     owner: "{{ me }}"
     recurse: true
-
-- name: Nvm
-  shell: |
-    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash'

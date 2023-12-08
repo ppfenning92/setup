@@ -1,6 +1,8 @@
-- name: ensire nvm dir exits
+---
+- name: Ensure nvm dir exits
   file:
     path: "{{ lookup('env', 'HOME') }}/.config/nvm"
- 
-- name: install nvm
-  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | sh
+
+- name: Nvm
+  shell: |
+    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash'
