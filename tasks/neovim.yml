@@ -26,8 +26,9 @@
 
 - name: Neovim Plugin Development 1
   become: true
-  apt:
-    - luarocks
+  ansible.builtin.apt:
+    name:
+      - luarocks
   tags:
     - install
     - neovim

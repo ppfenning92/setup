@@ -1,7 +1,7 @@
 ---
 - name: Install System Packages
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - build-essential
       - software-properties-common
@@ -38,31 +38,9 @@
     - core
 
 - name: Setup Directories
-  file:
-    state: directory
-    path: "{{ item }}"
-    owner: "{{ me }}"
-    group: "{{ me }}"
-  loop:
-    - "{{ lookup('env', 'HOME') }}/Documents"
-    - "{{ lookup('env', 'HOME') }}/Downloads"
-    - "{{ lookup('env', 'HOME') }}/Pictures"
-    - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
-    - "{{ lookup('env', 'HOME') }}/projects"
-    - "{{ lookup('env', 'HOME') }}/projects/private"
-    - "{{ lookup('env', 'HOME') }}/projects/work"
-    - "{{ lookup('env', 'HOME') }}/.config"
-    - "{{ lookup('env', 'HOME') }}/.local"
-    - "{{ lookup('env', 'HOME') }}/.local/bin"
-    - "{{ lookup('env', 'HOME') }}/.local/share"
-    - "{{ lookup('env', 'HOME') }}/.local/state"
-    - "{{ lookup('env', 'HOME') }}/.cache"
-
-- name: Ensure XDG Runtime directory exists
-  become: true
-  file:
+  ansible.builtin.file:
     path: "$XDG_RUNTIME_DIR"
     state: directory
     owner: "{{ me }}"
     group: "{{ me }}"
-    mode: 0700
+    mode: "0700"
