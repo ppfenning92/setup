@@ -1,30 +1,30 @@
+---
 - name: Get dotfiles repo
-  git:
+  ansible.builtin.git:
     repo: git@github.com:ppfenning92/dotfiles.git
     dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
     recursive: true
+    update: true
 
-- name: remove default .bashrc
-  file:
-    path: "{{ lookup('env', 'HOME')}}/.bashrc"
+- name: Remove default .bashrc
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME' ) }}/.bashrc"
     state: absent
 
 - name: Stow
-  shell: chdir={{ lookup('env', 'HOME')}}/.dotfiles stow . -d . -t "{{ lookup('env', 'HOME') }}"
+  ansible.builtin.shell: chdir={{ lookup('env', 'HOME')}}/.dotfiles stow . -d . -t "{{ lookup('env', 'HOME') }}"
 
 - name: Set disable admin-flag file
   become: true
-  file:
+  ansible.builtin.file:
     path: /etc/sudoers.d/disable_admin_flag
     state: touch
 
 - name: Set disable admin-flag file
   become: true
-  blockinfile:
+  ansible.builtin.blockinfile:
     marker: "### ANSIBLE MANAGED"
     path: /etc/sudoers.d/disable_admin_flag
     insertafter: EOF
     block: |
       Defaults !admin_flag
-
-  
