@@ -6,14 +6,14 @@
   changed_when: true
   tags:
     - install
-    - productivity
+    - update
 
 - name: Set rust to stable version
   ansible.builtin.shell: $CARGO_HOME/bin/rustup default stable
   changed_when: true
   tags:
     - install
-    - productivity
+    - update
 
 - name: Install tools
   ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
@@ -33,4 +33,4 @@
     - jql
   tags:
     - install
-    - productivity
+    - update
