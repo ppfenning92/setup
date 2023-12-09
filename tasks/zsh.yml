@@ -1,30 +1,33 @@
+---
 - name: Install ZSH
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - zsh
-  tags: &tags_for_zsh_tasks [ 'install', 'productivity', 'dotfiles', 'zsh' ]
+  tags: &tags_for_zsh_tasks ["install", "productivity", "dotfiles", "zsh"]
 
 - name: Change shell to zsh
   become: true
-  shell: chsh --shell $(which zsh) {{ me }}
+  ansible.builtin.shell: chsh --shell $(which zsh) {{ me }}
+  changed_when: true
   tags: *tags_for_zsh_tasks
 
 - name: Check that the oh-my-zsh exists
-  stat:
+  ansible.builtin.stat:
     path: "{{ lookup('env', 'HOME') }}/.config/zsh/ohmyzsh"
   register: oh_my_stats
   tags: *tags_for_zsh_tasks
 
 - name: Oh-My-Zsh
-  shell: |
+  ansible.builtin.shell: |
     source {{ lookup('env', 'HOME') }}/.bashrc
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  changed_when: true
   tags: *tags_for_zsh_tasks
-  when: oh_my_stats.stat.exists == False
+  when: not oh_my_stats.stat.exists
 
 - name: Install autosuggestions
-  shell: |
+  ansible.builtin.shell: |
     source {{ lookup('env', 'HOME') }}/.bashrc
     PLUGIN_DIR="$ZSH/custom/plugins/{{ item }}"
     if [[ -d "$PLUGIN_DIR" ]]; then
@@ -32,6 +35,7 @@
     else
       git clone "https://github.com/zsh-users/{{ item }}" "$PLUGIN_DIR"
     fi
+  changed_when: true
   loop:
     - zsh-autosuggestions
     - zsh-syntax-highlighting
@@ -40,12 +44,15 @@
   tags: *tags_for_zsh_tasks
 
 - name: Install Starship
-  shell: curl -sS https://starship.rs/install.sh | sh -s -- -y
+  ansible.builtin.shell: |
+    set -o pipefail;
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+  changed_when: true
   tags: *tags_for_zsh_tasks
 
-- name: set global ZDOTDIR
+- name: Set global ZDOTDIR
   become: true
-  blockinfile:
+  ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
     dest: /etc/zsh/zshenv
@@ -54,10 +61,3 @@
       if [[ -d "$HOME/.config/zsh" ]]; then
         export ZDOTDIR=$HOME/.config/zsh
       fi
-
-- name: move zshrc
-  copy:
-    dest: "{{ lookup('env', 'HOME') }}/.config/zsh/.zshrc"
-    src: "{{ lookup('env', 'HOME') }}/.config/zsh/.zshrc.pre-oh-my-zsh"
-
-

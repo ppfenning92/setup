@@ -8,17 +8,18 @@
 
 - name: Remove default .bashrc
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME' ) }}/.bashrc"
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
     state: absent
 
 - name: Stow
-  ansible.builtin.shell: chdir={{ lookup('env', 'HOME')}}/.dotfiles stow . -d . -t "{{ lookup('env', 'HOME') }}"
+  ansible.builtin.command: chdir={{ lookup('env', 'HOME') }}/.dotfiles stow . -d . -t "{{ lookup('env', 'HOME') }}"
 
 - name: Set disable admin-flag file
   become: true
   ansible.builtin.file:
     path: /etc/sudoers.d/disable_admin_flag
     state: touch
+    mode: "644"
 
 - name: Set disable admin-flag file
   become: true

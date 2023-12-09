@@ -1,22 +1,24 @@
+---
 - name: Download go
-  get_url:
-    url: https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
-    dest: /tmp/go1.21.5.tar.gz
-
+  ansible.builtin.get_url:
+    url: https://go.dev/dl/go1.20.5.linux-amd64.tar.gz
+    dest: /tmp/go1.20.5.tar.gz
+    mode: "0644"
 - name: Extract go
   become: true
-  unarchive:
-    src: /tmp/go1.21.5.tar.gz
+  ansible.builtin.unarchive:
+    src: /tmp/go1.20.5.tar.gz
     dest: /usr/local
 
 - name: Remove installer
-  file:
-    path: /tmp/go1.21.5.tar.gz
+  ansible.builtin.file:
+    path: /tmp/go1.20.5.tar.gz
     state: absent
 
-- name: go tools
-  shell: |
+- name: Go tools
+  ansible.builtin.shell: |
     GOPATH="$XDG_DATA_HOME"/go /usr/local/go/bin/go install {{ item }}
+  changed_when: true
   loop:
     - github.com/charmbracelet/glow@latest
     - github.com/charmbracelet/gum@latest
