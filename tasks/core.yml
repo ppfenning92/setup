@@ -39,8 +39,16 @@
 
 - name: Setup Directories
   ansible.builtin.file:
-    path: "$XDG_RUNTIME_DIR"
+    path: "/opt"
     state: directory
     owner: "{{ me }}"
     group: "{{ me }}"
-    mode: "0700"
+    mode: "0755"
+    recurse: true
+# - name: Setup Directories
+#   ansible.builtin.file:
+#     path: "$XDG_RUNTIME_DIR"
+#     state: directory
+#     owner: "{{ me }}"
+#     group: "{{ me }}"
+#     mode: "0700"
