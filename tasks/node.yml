@@ -1,8 +1,12 @@
 ---
 - name: Ensure nvm dir exits
-  file:
+  ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/.config/nvm"
+    state: directory
+    mode: "0755"
+    owner: "{{ me }}"
+    group: "{{ me }}"
 
 - name: Nvm
-  shell: |
+  ansible.builtin.shell: |
     PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash'
