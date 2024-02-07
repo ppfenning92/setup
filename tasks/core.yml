@@ -38,6 +38,7 @@
     - core
 
 - name: Setup Directories
+  become: true
   ansible.builtin.file:
     path: "/opt"
     state: directory
