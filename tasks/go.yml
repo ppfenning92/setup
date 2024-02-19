@@ -1,18 +1,18 @@
 ---
 - name: Download go
   ansible.builtin.get_url:
-    url: https://go.dev/dl/go1.20.5.linux-amd64.tar.gz
-    dest: /tmp/go1.20.5.tar.gz
+    url: https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
+    dest: /tmp/go1.22.0.tar.gz
     mode: "0644"
 - name: Extract go
   become: true
   ansible.builtin.unarchive:
-    src: /tmp/go1.20.5.tar.gz
+    src: /tmp/go1.22.0.tar.gz
     dest: /usr/local
 
 - name: Remove installer
   ansible.builtin.file:
-    path: /tmp/go1.20.5.tar.gz
+    path: /tmp/go1.22.0.tar.gz
     state: absent
 
 - name: Go tools

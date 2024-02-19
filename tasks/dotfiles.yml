@@ -5,6 +5,7 @@
     dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
     recursive: true
     update: true
+    force: true
 
 - name: Remove default .bashrc
   ansible.builtin.file:
