@@ -31,6 +31,7 @@
     NVM_DIR: "{{ lookup('env', 'HOME') }}/.config/nvm"
   tasks:
     - include_tasks: tasks/core.yml
+      tags: ["core", "install"]
     - include_tasks: tasks/ssh.yml
     - include_tasks: tasks/dotfiles.yml
     - include_tasks: tasks/zsh.yml
@@ -40,5 +41,8 @@
     - include_tasks: tasks/neovim.yml
     - include_tasks: tasks/tools.yml
     - include_tasks: tasks/go.yml
+      tags: ["go", "install"]
     - include_tasks: tasks/node.yml
     - include_tasks: tasks/btop.yml
+    - include_tasks: tasks/entr.yml
+      tags: ["entr", "install"]

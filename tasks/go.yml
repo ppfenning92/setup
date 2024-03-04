@@ -4,16 +4,20 @@
     url: https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
     dest: /tmp/go1.22.0.tar.gz
     mode: "0644"
+  tags: ["go", "install"]
+
 - name: Extract go
   become: true
   ansible.builtin.unarchive:
     src: /tmp/go1.22.0.tar.gz
     dest: /usr/local
+  tags: ["go", "install"]
 
 - name: Remove installer
   ansible.builtin.file:
     path: /tmp/go1.22.0.tar.gz
     state: absent
+  tags: ["go", "install"]
 
 - name: Go tools
   ansible.builtin.shell: |
@@ -25,3 +29,5 @@
     - github.com/incu6us/goimports-reviser/v3@latest
     - mvdan.cc/gofumpt@latest
     - github.com/segmentio/golines@latest
+    - github.com/jesseduffield/lazydocker@latest
+  tags: ["go", "install"]
