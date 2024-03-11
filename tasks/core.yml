@@ -23,7 +23,6 @@
       - htop
       - exa
       - git
-      - fzf
       - nmap
       - imagemagick
       - python3-venv
@@ -31,9 +30,13 @@
       - yamllint
       - wslu
       - xdg-utils
+      - apache2-utils
+      - ffmpeg
+      - net-tools
+      - xsel
+      - gnupg2
   tags:
     - install
-    - neovim
     - core
 
 - name: Setup Directories

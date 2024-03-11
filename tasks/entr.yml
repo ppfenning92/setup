@@ -5,9 +5,7 @@
     dest: /opt/entr
     force: true
     update: true
-  tags: &entr_tags
-    - entr
-    - install
+  tags: &entr_tags ["entr", "install"]
 
 - name: Run configure
   ansible.builtin.shell:
@@ -19,9 +17,10 @@
   ansible.builtin.make:
     chdir: /opt/entr/
     target: test
-  <<: *entr_tags
+  tags: *entr_tags
 
 - name: Make install
+  become: true
   ansible.builtin.make:
     chdir: /opt/entr/
     target: install

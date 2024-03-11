@@ -7,6 +7,7 @@
   tags:
     - install
     - update
+    - rust
 
 - name: Set rust to stable version
   ansible.builtin.shell: $CARGO_HOME/bin/rustup default stable
@@ -14,6 +15,7 @@
   tags:
     - install
     - update
+    - rust
 
 - name: Install tools
   ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
@@ -35,3 +37,5 @@
   tags:
     - install
     - update
+    - rust
+    - full

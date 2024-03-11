@@ -33,12 +33,15 @@
     - include_tasks: tasks/core.yml
       tags: ["core", "install"]
     - include_tasks: tasks/ssh.yml
+      tags: ["ssh", "install"]
     - include_tasks: tasks/dotfiles.yml
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/1password.yml
     - include_tasks: tasks/fonts.yml
     - include_tasks: tasks/rust.yml
+      tags: ["rust", "install"]
     - include_tasks: tasks/neovim.yml
+      tags: ["neovim", "install"]
     - include_tasks: tasks/tools.yml
     - include_tasks: tasks/go.yml
       tags: ["go", "install"]

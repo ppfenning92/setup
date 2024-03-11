@@ -49,8 +49,11 @@
   tags:
     - install
     - neovim
-
+    - rust
 - name: Remove neovim src dir
   ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/neovim"
     state: absent
+  tags:
+    - install
+    - neovim
