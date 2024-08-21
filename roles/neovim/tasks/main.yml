@@ -2,26 +2,26 @@
 - name: Clone Neovim
   ansible.builtin.git:
     repo: "https://github.com/neovim/neovim.git"
-    dest: "{{ lookup('env', 'HOME') }}/neovim"
+    dest: "{{ ansible_env.HOME }}/neovim"
     update: true
   changed_when: true
   tags:
-    - install
+    - core
     - neovim
 
 - name: Build neovim
-  ansible.builtin.shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20"
+  ansible.builtin.shell: "cd {{ ansible_env.HOME }}/neovim && make -j 20"
   changed_when: true
   tags:
-    - install
+    - core
     - neovim
 
 - name: Install neovim
   become: true
-  ansible.builtin.shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
+  ansible.builtin.shell: "cd {{ ansible_env.HOME }}/neovim && make install"
   changed_when: true
   tags:
-    - install
+    - core
     - neovim
 
 - name: Neovim Plugin Development 1
@@ -30,7 +30,7 @@
     name:
       - luarocks
   tags:
-    - install
+    - dev
     - neovim
 
 - name: Neovim Plugin Development 2 luacheck
@@ -38,7 +38,7 @@
   ansible.builtin.command: luarocks install luacheck
   changed_when: true
   tags:
-    - install
+    - dev
     - neovim
 
 - name: Install stylua
@@ -47,13 +47,14 @@
   loop:
     - stylua
   tags:
-    - install
+    - dev
     - neovim
     - rust
+
 - name: Remove neovim src dir
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/neovim"
+    path: "{{ ansible_env.HOME }}/neovim"
     state: absent
   tags:
-    - install
+    - core
     - neovim

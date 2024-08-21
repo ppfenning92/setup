@@ -1,0 +1,43 @@
+---
+- name: "Install core packages"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - gettext
+      - unzip
+      - zip
+      - jq
+      - yq
+      - git
+      - tmux
+      - net-tools
+      - gnupg2
+      - lua5.1
+      - xdg-utils
+      - yamllint
+      - stow
+      - build-essential
+      - software-properties-common
+  tags:
+    - install
+    - core
+
+- name: "Install dev packages"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - ffmpeg
+      - pkg-config
+      - apache2-utils
+      - imagemagick
+      - nmap
+      - fontconfig
+      - libtool
+      - lintool-bin
+      - wslu
+  tags:
+    - install
+    - core
+    - dev

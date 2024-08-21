@@ -16,36 +16,37 @@
         update_cache: true
         state: present
       tags:
-        - install
+        - dev
         - core
   environment:
-    XDG_CONFIG_HOME: "{{ lookup('env', 'HOME') }}/.config"
-    XDG_CACHE_HOME: "{{ lookup('env', 'HOME') }}/.cache"
-    XDG_DATA_HOME: "{{ lookup('env', 'HOME') }}/.local/share"
-    XDG_STATE_HOME: "{{ lookup('env', 'HOME') }}/.local/state"
-    XDG_RUNTIME_DIR: "/run/user/{{ lookup('env', 'UID') }}"
-    ZDOTDIR: "{{ lookup('env', 'HOME') }}/.config/zsh"
-    ZSH: "{{ lookup('env', 'HOME') }}.config/zsh/ohmyzsh"
-    CARGO_HOME: "{{ lookup('env', 'HOME') }}/.local/share/cargo"
-    RUSTUP_HOME: "{{ lookup('env', 'HOME') }}/.local/share/rustup"
-    NVM_DIR: "{{ lookup('env', 'HOME') }}/.config/nvm"
-  tasks:
-    - include_tasks: tasks/core.yml
-      tags: ["core", "install"]
-    - include_tasks: tasks/ssh.yml
-      tags: ["ssh", "install"]
-    - include_tasks: tasks/dotfiles.yml
-    - include_tasks: tasks/zsh.yml
-    - include_tasks: tasks/1password.yml
-    - include_tasks: tasks/fonts.yml
-    - include_tasks: tasks/rust.yml
-      tags: ["rust", "install"]
-    - include_tasks: tasks/neovim.yml
-      tags: ["neovim", "install"]
-    - include_tasks: tasks/tools.yml
-    - include_tasks: tasks/go.yml
-      tags: ["go", "install"]
-    - include_tasks: tasks/node.yml
-    - include_tasks: tasks/btop.yml
-    - include_tasks: tasks/entr.yml
-      tags: ["entr", "install"]
+    XDG_CONFIG_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.config"
+    XDG_CACHE_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.cache"
+    XDG_DATA_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share"
+    XDG_STATE_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/state"
+    XDG_RUNTIME_DIR: "/run/user/{{ ansible_env.UID }}"
+    ZDOTDIR: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.config/zsh"
+    ZSH: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}.config/zsh/ohmyzsh"
+    CARGO_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share/cargo"
+    RUSTUP_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share/rustup"
+    NVM_DIR: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.config/nvm"
+    BUN_INSTALL: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share/bun"
+    GOPATH: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share/go"
+    DOCKER_CONFIG: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.config/docker"
+    ANSIBLE_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share/ansible"
+    GNUPGHOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}/.local/share/gnupg"
+  roles:
+    - apt
+    - dirs
+    - role: ssh
+      when: inventory_hostname == "localhost"
+    - dotfiles
+    - zsh
+    - 1password
+    - rust
+    - neovim
+    - role: fonts
+      when: inventory_hostname == "localhost"
+    - tools
+    - go
+    - role: node
+      when: inventory_hostname == "localhost"

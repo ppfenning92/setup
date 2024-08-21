@@ -4,7 +4,7 @@
   ansible.builtin.apt:
     name:
       - zsh
-  tags: &tags_for_zsh_tasks ["install", "productivity", "dotfiles", "zsh"]
+  tags: &tags_for_zsh_tasks ["core", "zsh"]
 
 - name: Change shell to zsh
   become: true
@@ -14,13 +14,13 @@
 
 - name: Check that the oh-my-zsh exists
   ansible.builtin.stat:
-    path: "{{ lookup('env', 'HOME') }}/.config/zsh/ohmyzsh"
+    path: "{{ ansible_env.HOME }}/.config/zsh/ohmyzsh"
   register: oh_my_stats
   tags: *tags_for_zsh_tasks
 
 - name: Oh-My-Zsh
   ansible.builtin.shell: |
-    source {{ lookup('env', 'HOME') }}/.bashrc
+    source {{ ansible_env.HOME }}/.bashrc
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   changed_when: true
   tags: *tags_for_zsh_tasks
@@ -28,7 +28,7 @@
 
 - name: Install autosuggestions
   ansible.builtin.shell: |
-    source {{ lookup('env', 'HOME') }}/.bashrc
+    source {{ ansible_env.HOME }}/.bashrc
     PLUGIN_DIR="$ZSH/custom/plugins/{{ item }}"
     if [[ -d "$PLUGIN_DIR" ]]; then
       cd "$PLUGIN_DIR" && git pull
@@ -49,15 +49,3 @@
     curl -sS https://starship.rs/install.sh | sh -s -- -y
   changed_when: true
   tags: *tags_for_zsh_tasks
-
-- name: Set global ZDOTDIR
-  become: true
-  ansible.builtin.blockinfile:
-    state: present
-    insertafter: EOF
-    dest: /etc/zsh/zshenv
-    marker: "### ANSIBLE MANAGED BLOCK ###"
-    content: |
-      if [[ -d "$HOME/.config/zsh" ]]; then
-        export ZDOTDIR=$HOME/.config/zsh
-      fi

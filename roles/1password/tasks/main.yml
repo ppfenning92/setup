@@ -8,12 +8,3 @@
     curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --yes --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
     sudo apt update && sudo apt install 1password-cli
     op --version
-
-- name: fix permission
-  file:
-    state: directory
-    owner: "{{ me }}"
-    group: "{{ me }}"
-    path: "{{ lookup('env', 'HOME') }}/setup"
-#- name: Login to 1password
-#  shell: eval $(op signin)

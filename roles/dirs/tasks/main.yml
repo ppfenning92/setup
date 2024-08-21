@@ -1,0 +1,23 @@
+---
+- name: "/opt"
+  become: true
+  ansible.builtin.file:
+    path: "/opt"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+    recurse: true
+  tags:
+    - core
+
+
+- name: "{{ ansible_env.HOME }}/setup"
+  ansible.builtin.file:
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    path: "{{ ansible_env.HOME }}/setup"
+    recurse: true
+  tags:
+    - core

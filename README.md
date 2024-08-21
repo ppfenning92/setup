@@ -2,7 +2,7 @@
 
 ## Repo setup
 ```shell
-git config --local include.path ../dotfiles-gitconfig 
+git config --local include.path .gitconfig
 ```
 
 ## setup new machine

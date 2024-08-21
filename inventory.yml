@@ -1,0 +1,15 @@
+all:
+  vars:
+    all_var: all123
+
+pis:
+  hosts:
+    10.10.1.9:
+  vars:
+    ansible_user: pi
+
+k8s_nodes:
+  hosts:
+    ilum.local.j-p.cloud:
+  vars:
+    ansible_user: p

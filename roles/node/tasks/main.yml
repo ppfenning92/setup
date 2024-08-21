@@ -1,11 +1,11 @@
 ---
 - name: Ensure nvm dir exits
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.local/share/nvm"
+    path: "{{ ansible_env.HOME }}/.local/share/nvm"
     state: directory
     mode: "0755"
-    owner: "{{ me }}"
-    group: "{{ me }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   tags:
     - node
     - dev
@@ -13,9 +13,9 @@
 - name: Nvm
   ansible.builtin.shell: |
     set -o pipefail
-    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
+    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash'
   args:
-    creates: "{{ lookup('env', 'XDG_DATA_HOME') }}/nvm"
+    creates: "{{ ansible_env.HOME }}/.local/share/nvm"
   tags:
     - node
     - dev
@@ -25,9 +25,9 @@
     set -o pipefail
     curl -fSsL https://bun.sh/install | bash
   environment:
-    BUN_INSTALL: "{{ lookup('env', 'HOME') }}/.local/share/bun"
+    BUN_INSTALL: "{{ ansible_env.HOME }}/.local/share/bun"
   args:
-    creates: "{{ lookup('env', 'HOME') }}/.local/share/bun"
+    creates: "{{ ansible_env.HOME }}/.local/share/bun"
   tags:
     - node
     - dev

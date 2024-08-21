@@ -5,7 +5,7 @@
     curl https://sh.rustup.rs -sSf | sh -s -- --profile=complete --no-modify-path -y
   changed_when: true
   tags:
-    - install
+    - core
     - update
     - rust
 
@@ -13,11 +13,23 @@
   ansible.builtin.shell: $CARGO_HOME/bin/rustup default stable
   changed_when: true
   tags:
-    - install
+    - core
     - update
     - rust
 
-- name: Install tools
+- name: Install core tools
+  ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
+  changed_when: true
+  loop:
+    - eva
+    - bat
+    - zoxide
+  tags:
+    - core
+    - update
+    - rust
+
+- name: Install dev tools
   ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
   changed_when: true
   loop:
@@ -25,19 +37,13 @@
     - du-dust
     - hyperfine
     - bandwhich
-    # - ytop
     - sd
-    - eza
-    - eva
     - procs
     - tealdeer
     - fd-find
-    - bat
-    - zoxide
-    - jql
     - silicon
   tags:
-    - install
+    - dev
     - update
     - rust
-    - full
+

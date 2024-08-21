@@ -1,14 +1,14 @@
 ---
 - name: Ensure directory
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.ssh"
+    path: "{{ ansible_env.HOME }}/.ssh"
     state: directory
-    owner: "{{ me }}"
-    group: "{{ me }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: "0700"
   tags:
     - ssh
-    - install
+    - dev
 
 - name: Copy public key
   ansible.builtin.copy:
@@ -17,7 +17,7 @@
     mode: "0644"
   tags:
     - ssh
-    - install
+    - dev
 
 - name: Copy private key
   ansible.builtin.copy:
@@ -26,7 +26,7 @@
     mode: "0600"
   tags:
     - ssh
-    - install
+    - dev
 
 - name: Set git known_hosts
   ansible.builtin.shell: |
@@ -34,4 +34,4 @@
     ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
   tags:
     - ssh
-    - install
+    - dev

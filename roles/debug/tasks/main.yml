@@ -1,0 +1,36 @@
+---
+- name: User
+  ansible.builtin.debug:
+    msg: |
+      {{ lookup('env', 'USER') }}
+      {{ lookup('env', 'HOST') }}
+      {{ lookup('env', 'HOME') }}
+      {{ ansible_env.SESS_VAR }}
+  tags: [ "debu2g" ]
+- name: Ansible_user
+  ansible.builtin.debug:
+    msg: |
+      {{ ansible_env.HOME }}
+      {{ ansible_architecture }}
+  tags: [ "debug" ]
+
+- name: All var
+  vars:
+    arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+  ansible.builtin.debug:
+    msg: |
+      {{ all_var }}
+      {{ arch }}
+  tags: [ "debug" ]
+
+- name: "Remote var"
+  ansible.builtin.command: |
+    echo $INTERPOLATED
+    echo $HOME
+
+  register: out
+  tags: [ "debug" ]
+
+- name: "debug out"
+  ansible.builtin.debug: msg="{{ out.stdout }}"
+  tags: [ "debug" ]

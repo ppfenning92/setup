@@ -5,7 +5,7 @@
     dest: /opt/entr
     force: true
     update: true
-  tags: &entr_tags ["entr", "install"]
+  tags: &entr_tags [ "entr", "dev" ]
 
 - name: Run configure
   ansible.builtin.shell:
