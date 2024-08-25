@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: true
+  environment:
+    SESS_VAR: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}/') }}"
+    INTERPOLATED: "/home/{{ ansible_user}}/sub/path"
+  roles:
+    - debug

@@ -1,0 +1,52 @@
+- hosts:
+    - test
+    - localhost
+  vars:
+    source_key: "./secrets/ssh/id_rsa"
+    source_key_pub: "./secrets/ssh/id_rsa.pub"
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    dest_key_pub: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
+    personal: "{{ lookup('env', 'HOME') }}/private"
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+      tags:
+        - dev
+        - core
+  environment:
+    ANSIBLE_EXECUTABLE: /bin/bash
+    XDG_CONFIG_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.config"
+    XDG_CACHE_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.cache"
+    XDG_DATA_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share"
+    XDG_STATE_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/state"
+    ZDOTDIR: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.config/zsh"
+    ZSH: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.config/zsh/ohmyzsh"
+    CARGO_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share/cargo"
+    RUSTUP_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share/rustup"
+    NVM_DIR: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.config/nvm"
+    BUN_INSTALL: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share/bun"
+    GOPATH: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share/go"
+    DOCKER_CONFIG: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.config/docker"
+    ANSIBLE_HOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share/ansible"
+    GNUPGHOME: "{{ ansible_env.HOME | default('/home/{{ ansible_user }}') }}/.local/share/gnupg"
+  roles:
+    - debug
+    - apt
+    - dirs
+    - role: ssh
+      when: inventory_hostname == "localhost"
+    - zsh
+    - dotfiles
+    - neovim
+    - role: fonts
+      when: inventory_hostname == "localhost"
+    - rust
+    - go
+    - role: node
+      when: inventory_hostname == "localhost"
+    - 1password
+    - tools

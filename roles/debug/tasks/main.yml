@@ -1,0 +1,8 @@
+---
+- name: User
+  ansible.builtin.debug:
+    msg: |
+      {{ ansible_user | default('___') }}
+      {{ ansible_env.HOME | default('___') }}
+      {{ lookup('env', 'HOME') }}
+  tags: ["debug"]

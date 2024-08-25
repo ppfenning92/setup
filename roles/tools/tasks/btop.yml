@@ -1,0 +1,42 @@
+---
+- name: Get latest
+  ansible.builtin.uri:
+    url: "https://github.com/aristocratos/btop/releases/latest"
+    method: GET
+  register: response
+  tags: &btop_tags ["btop", "core"]
+
+- name: Set latest version url
+  ansible.builtin.set_fact:
+    btop_version: "{{ response.url | regex_search('v[0-9]+.[0-9]+.[0-9]+') }}"
+  tags: *btop_tags
+
+- name: Download btop
+  ansible.builtin.get_url:
+    url: "https://github.com/aristocratos/btop/releases/download/{{ btop_version }}/btop-x86_64-linux-musl.tbz"
+    dest: /tmp/btop-x86_64-linux-musl.tar.bz2
+    mode: "0755"
+    force: true
+  tags: *btop_tags
+
+- name: Unpack btop
+  ansible.builtin.unarchive:
+    src: /tmp/btop-x86_64-linux-musl.tar.bz2
+    dest: /opt/
+    mode: "0755"
+    remote_src: "{{ inventory_hostname != 'localhost' }}"
+  tags: *btop_tags
+
+- name: Install btop
+  ansible.builtin.make:
+    chdir: /opt/btop
+    target: install
+  become: true
+  tags: *btop_tags
+
+- name: set suid bit for btop
+  ansible.builtin.make:
+    chdir: /opt/btop
+    target: setuid
+  become: true
+  tags: *btop_tags

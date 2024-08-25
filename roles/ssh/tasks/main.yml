@@ -1,0 +1,41 @@
+---
+- name: Ensure directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0700"
+  tags:
+    - ssh
+    - dev
+
+- name: Copy public key
+  ansible.builtin.copy:
+    dest: "{{ dest_key_pub }}"
+    src: "{{ source_key_pub }}"
+    mode: "0644"
+  tags:
+    - ssh
+    - dev
+
+- name: Copy private key
+  ansible.builtin.copy:
+    dest: "{{ dest_key }}"
+    src: "{{ source_key }}"
+    mode: "0600"
+  tags:
+    - ssh
+    - dev
+
+- name: Set git known_hosts
+  ansible.builtin.shell: |
+    ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+  tags:
+    - ssh
+    - dev
+
+- name: "Set fact ssh ran"
+  ansible.builtin.set_fact:
+    ssh_ran: true

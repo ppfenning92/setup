@@ -1,0 +1,59 @@
+---
+- name: Install rust
+  ansible.builtin.shell: |
+    set -o pipefail;
+    curl https://sh.rustup.rs -sSf | sh -s -- --profile=complete --no-modify-path -y
+  changed_when: true
+  tags:
+    - core
+    - update
+    - rust
+
+- name: Set rust to stable version
+  ansible.builtin.shell: $CARGO_HOME/bin/rustup default stable
+  changed_when: true
+  tags:
+    - core
+    - update
+    - rust
+
+- name: Install core tools
+  ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
+  changed_when: true
+  loop:
+    - eza
+    - bat
+    - zoxide
+  tags:
+    - core
+    - update
+    - rust
+
+- name: Install dev tools
+  ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
+  changed_when: true
+  loop:
+    - eva
+    - ripgrep
+    - du-dust
+    - hyperfine
+    - bandwhich
+    - sd
+    - procs
+    - tealdeer
+    - fd-find
+    - silicon
+  tags:
+    - dev
+    - update
+    - rust
+
+- name: Install stylua
+  ansible.builtin.shell: $CARGO_HOME/bin/cargo install {{ item }}
+  changed_when: true
+  loop:
+    - stylua
+  tags:
+    - dev
+    - neovim
+    - rust

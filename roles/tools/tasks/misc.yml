@@ -1,0 +1,27 @@
+---
+- name: Download fzf from git
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/junegunn/fzf.git
+    depth: 1
+    dest: /opt/fzf
+    force: true
+  changed_when: true
+  tags: ["core", "tool"]
+
+- name: Install fzf
+  ansible.builtin.shell: |
+    bash -c "/opt/fzf/install --all --xdg --key-bindings --completion --no-update-rc"
+  changed_when: true
+  become: true
+  tags: ["core", "tool"]
+
+- name: Glamour themes
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/catppuccin/glamour.git
+    # version: v1.0.0
+    depth: 1
+    dest: /opt/catppuccin/glamour
+    force: true
+  tags: ["core", "tool"]

@@ -1,0 +1,61 @@
+---
+- name: Clone Neovim
+  ansible.builtin.git:
+    repo: "https://github.com/neovim/neovim.git"
+    dest: "{{ ansible_env.HOME }}/neovim"
+    update: true
+  changed_when: true
+  tags:
+    - dev
+    - neovim
+  register: source
+
+- name: Install via apt
+  become: true
+  ansible.builtin.apt:
+    name:
+      - neovim
+  when: source is not defined
+  tags:
+    - core
+    - neovim
+
+- name: Build neovim
+  ansible.builtin.shell: "cd {{ ansible_env.HOME }}/neovim && make -j 20"
+  changed_when: true
+  tags:
+    - dev
+    - neovim
+
+- name: Install neovim
+  become: true
+  ansible.builtin.shell: "cd {{ ansible_env.HOME }}/neovim && make install"
+  changed_when: true
+  tags:
+    - dev
+    - neovim
+
+- name: Neovim Plugin Development 1
+  become: true
+  ansible.builtin.apt:
+    name:
+      - luarocks
+  tags:
+    - dev
+    - neovim
+
+- name: Neovim Plugin Development 2 luacheck
+  become: true
+  ansible.builtin.command: luarocks install luacheck
+  changed_when: true
+  tags:
+    - dev
+    - neovim
+
+- name: Remove neovim src dir
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/neovim"
+    state: absent
+  tags:
+    - dev
+    - neovim

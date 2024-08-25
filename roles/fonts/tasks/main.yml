@@ -1,0 +1,29 @@
+---
+- name: Download Font CascadiaCode
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/microsoft/cascadia-code/releases/download/v2404.23/CascadiaCode-2404.23.zip
+    dest: /tmp/CascadiaCode.zip
+  tags: [ "dev", "fonts" ]
+
+- name: Download Font 0xProto
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/0xType/0xProto/releases/download/2.100/0xProto_2_100.zip
+    dest: /tmp/0xProto.zip
+  tags: [ "dev", "fonts" ]
+
+- name: Unzip Fonts
+  become: true
+  ansible.builtin.unarchive:
+    src: /tmp/{{ item }}.zip
+    dest: /usr/local/share/fonts
+  loop:
+    - CascadiaCode
+    - 0xProto
+  tags: [ "dev", "fonts" ]
+
+- name: Install Fonts
+  become: true
+  shell: fc-cache -fvs
+  tags: [ "dev", "fonts" ]

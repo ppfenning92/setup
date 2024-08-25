@@ -1,0 +1,48 @@
+---
+- name: Get dotfiles repo
+  vars:
+    repo_url: "{{ 'git@github.com:ppfenning92/dotfiles.git' if ssh_ran is defined else 'https://github.com/ppfenning92/dotfiles' }}"
+  ansible.builtin.git:
+    repo: "{{ repo_url }}"
+    dest: "{{ ansible_env.HOME }}/.dotfiles"
+    recursive: true
+    update: true
+    force: true
+  tags: &dotfiles_tags ["dotfiles", "core"]
+
+- name: Remove default shell config files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ ansible_env.HOME }}/.bashrc"
+    - "{{ ansible_env.HOME }}/.config/zsh/.zshrc"
+  tags: *dotfiles_tags
+
+- name: Stow '{{ ansible_env.HOME }}/.dotfiles'
+  ansible.builtin.command: chdir={{ ansible_env.HOME }}/.dotfiles stow -R --dotfiles -d . -t "{{ ansible_env.HOME }}" .
+  tags: *dotfiles_tags
+
+- name: Set disable admin-flag file
+  become: true
+  ansible.builtin.file:
+    path: /etc/sudoers.d/disable_admin_flag
+    state: touch
+    mode: "644"
+  tags: *dotfiles_tags
+
+- name: Set disable admin-flag file
+  become: true
+  ansible.builtin.blockinfile:
+    marker: "### ANSIBLE MANAGED"
+    path: /etc/sudoers.d/disable_admin_flag
+    insertafter: EOF
+    block: |
+      Defaults !admin_flag
+  tags: *dotfiles_tags
+
+- name: Run local scripts
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+  loop:
+    - "{{ ansible_env.HOME }}/.config/tmux/plugins/tpm/scripts/install_plugins.sh"

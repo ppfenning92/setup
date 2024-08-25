@@ -1,0 +1,12 @@
+quiet: false
+db:
+  no-progress: true
+insecure: false
+cache-dir: .trivy
+skip-files: [ ]
+scan:
+  scanners:
+    - vuln
+    - config
+    - secret
+    - misconfig

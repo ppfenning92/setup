@@ -1,0 +1,15 @@
+---
+- name: "Btop"
+  ansible.builtin.include_tasks: btop.yml
+  tags: ["core", "tool"]
+- name: "Misc"
+  ansible.builtin.include_tasks: misc.yml
+  tags: ["core", "tool"]
+- name: "Entr"
+  ansible.builtin.include_tasks: entr.yml
+  tags: ["dev", "tool"]
+  when: inventory_hostname == "localhost"
+- name: "Localhost only"
+  ansible.builtin.include_tasks: localhost.yml
+  tags: ["dev", "tool"]
+  when: inventory_hostname == "localhost"

@@ -1,0 +1,40 @@
+---
+- name: "user dirs"
+  become: true
+  ansible.builtin.file:
+    path: "/opt"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+    recurse: true
+  loop:
+    - /opt
+    - "{{ ansible_env.HOME }}/.config/"
+    - "{{ ansible_env.HOME }}/.local/share"
+    - "{{ ansible_env.HOME }}/.local/state"
+    - "{{ ansible_env.HOME }}/.cache"
+  tags:
+    - core
+    - dirs
+
+- name: "Get UID"
+  become: true
+  ansible.builtin.command: id -u {{ ansible_user }}
+  register: "id_cmd"
+  tags:
+    - core
+    - dir
+
+- name: "run dir for uid {{ id_cmd.stdout }}"
+  become: true
+  ansible.builtin.file:
+    path: "/run/user/{{ id_cmd.stdout }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0700"
+    recurse: true
+  tags:
+    - core
+    - dirs

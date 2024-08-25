@@ -1,0 +1,6 @@
+test:
+  hosts:
+    docker-test-ssh:
+      ansible_host: 172.19.0.2
+      ansible_user: p_ssh
+      executable: /bin/bash
