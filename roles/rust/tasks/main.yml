@@ -1,19 +1,23 @@
 ---
 - name: Install rust
+  vars:
+    profile: "{{ 'complete' if inventory_hostname == 'localhost' else 'default' }}"
   ansible.builtin.shell: |
     set -o pipefail;
-    curl https://sh.rustup.rs -sSf | sh -s -- --profile=complete --no-modify-path -y
+    curl https://sh.rustup.rs -sSf | sh -s -- --profile={{ profile }} --no-modify-path -y
   changed_when: true
   tags:
-    - core
+    - dev
     - update
     - rust
 
 - name: Set rust to stable version
-  ansible.builtin.shell: $CARGO_HOME/bin/rustup default stable
+  ansible.builtin.shell: |
+    $CARGO_HOME/bin/rustup set profile default
+    $CARGO_HOME/bin/rustup default stable
   changed_when: true
   tags:
-    - core
+    - dev
     - update
     - rust
 
@@ -22,10 +26,9 @@
   changed_when: true
   loop:
     - eza
-    - bat
     - zoxide
   tags:
-    - core
+    - dev
     - update
     - rust
 

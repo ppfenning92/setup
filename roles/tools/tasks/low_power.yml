@@ -1,0 +1,50 @@
+---
+- name: "Install zoxide via script"
+  ansible.builtin.shell: |
+    set -o pipefail;
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  tags:
+    - tool
+    - core
+  when: inventory_hostname != 'localhost'
+
+- name: "Install eza via custom apt source"
+  become: true
+  ansible.builtin.shell: |
+    set -o pipefail;
+    mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+  when: inventory_hostname != 'localhost'
+  tags: [ "core", "tool" ]
+
+- name: "Install charm via custom apt source"
+  become: true
+  ansible.builtin.shell: |
+    set -o pipefail;
+    mkdir -p /etc/apt/keyrings
+    curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+    chmod 644 /etc/apt/keyrings/charm.gpg /etc/apt/sources.list.d/charm.list
+  tags: [ "core", "tool" ]
+  when: inventory_hostname != 'localhost'
+
+- name: "update apt"
+  become: true
+  ansible.builtin.apt:
+    force_apt_get: true
+    update_cache: true
+    state: present
+  tags: [ "core", "tool" ]
+  when: inventory_hostname != 'localhost'
+
+- name: "install eza"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - eza
+      - glow
+      - gum
+  tags: [ "core", "tool" ]
+  when: inventory_hostname != 'localhost'

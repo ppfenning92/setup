@@ -63,5 +63,6 @@
     content: |
       if [[ -d "$HOME/.config/zsh" ]]; then
         export ZDOTDIR=$HOME/.config/zsh
+        export SYSTEM_TYPE="{{ SYSTEM_TYPE | default('') }}"
       fi
   tags: *tags_for_zsh_tasks

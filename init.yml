@@ -1,5 +1,6 @@
 - hosts:
     - test
+    - pi_hole
     - localhost
   vars:
     source_key: "./secrets/ssh/id_rsa"
