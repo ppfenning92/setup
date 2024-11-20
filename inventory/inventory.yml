@@ -1,16 +1,20 @@
-pi_hole:
-  hosts:
-    pi-hole-1:
-      ansible_host: 10.10.1.8
-    pi-hole-2:
-      ansible_host: 10.10.1.9
+all:
   vars:
-    ansible_user: pi
-    SYSTEM_TYPE: SERVER
+    marker: SETUP
 
 k8s_nodes:
   hosts:
-    ilum.local.j-p.cloud:
+    ilum:
+      ansible_host: ilum.local.j-p.cloud
   vars:
     ansible_user: p
     SYSTEM_TYPE: SERVER
+# server_nodes:
+#   hosts:
+#     truenas:
+#       ansible_host: 10.10.1.11
+#     misc_nuc:
+#       ansible_host: 10.10.1.9
+#   vars:
+#     ansible_user: p
+#     SYSTEM_TYPE: SERVER

@@ -40,4 +40,5 @@
     - mvdan.cc/gofumpt@latest
     - github.com/segmentio/golines@latest
     - github.com/jesseduffield/lazydocker@latest
+    - github.com/mikefarah/yq/v4@latest
   tags: ["go", "dev"]

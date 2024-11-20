@@ -12,7 +12,6 @@
       - git
       - jq
       - yq
-      - git
       - tmux
       - net-tools
       - gnupg2

@@ -1,6 +1,7 @@
 - hosts:
     - test
-    - pi_hole
+    - server_nodes
+    - k8s_nodes
     - localhost
   vars:
     source_key: "./secrets/ssh/id_rsa"
@@ -49,5 +50,6 @@
     - go
     - role: node
       when: inventory_hostname == "localhost"
-    - 1password
+    - role: 1password
+      when: inventory_hostname == "localhost"
     - tools

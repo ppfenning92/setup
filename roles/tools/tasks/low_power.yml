@@ -8,6 +8,20 @@
     - core
   when: inventory_hostname != 'localhost'
 
+- name: "check for eza apt list"
+  ansible.builtin.stat:
+    path:  /etc/apt/sources.list.d/gierens.list
+  register: eza_apt_list
+  when: inventory_hostname != 'localhost'
+  tags: [ "core", "tool" ]
+
+- name: "check for charm apt list"
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/charm.list
+  register: charm_apt_list
+  when: inventory_hostname != 'localhost'
+  tags: [ "core", "tool" ]
+
 - name: "Install eza via custom apt source"
   become: true
   ansible.builtin.shell: |
@@ -16,7 +30,7 @@
     wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
     echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
     chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-  when: inventory_hostname != 'localhost'
+  when: inventory_hostname != 'localhost' and eza_apt_list.stat.exists == False
   tags: [ "core", "tool" ]
 
 - name: "Install charm via custom apt source"
@@ -28,7 +42,7 @@
     echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
     chmod 644 /etc/apt/keyrings/charm.gpg /etc/apt/sources.list.d/charm.list
   tags: [ "core", "tool" ]
-  when: inventory_hostname != 'localhost'
+  when: inventory_hostname != 'localhost' and charm_apt_list.stat.exists == False
 
 - name: "update apt"
   become: true
